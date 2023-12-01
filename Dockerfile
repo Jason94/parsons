@@ -1,4 +1,4 @@
-FROM --platform=linux/amd64 python:3.7
+FROM python:3.10
 
 ####################
 ## Selenium setup ##
@@ -36,6 +36,9 @@ WORKDIR /src
 
 RUN python setup.py develop
 
+# Install additional packages
+RUN pip install pandas python-dotenv sqlalchemy datetime ipdb asyncio aiohttp numpy
+
 # The /app directory can house the scripts that will actually execute on this Docker image.
 # Eg. If using this image in a Civis container script, Civis will install your script repo
 # (from Github) to /app.
@@ -43,3 +46,10 @@ RUN mkdir /app
 WORKDIR /app
 # Useful for importing modules that are associated with your python scripts:
 ENV PYTHONPATH=.:/app
+
+########################
+## Extra Dependencies ##
+########################
+
+# Install frequently used Python dependencies
+RUN pip install yagmail textdistance toolz shortuuid pypika slack_sdk
